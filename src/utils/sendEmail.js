@@ -1,18 +1,17 @@
 import nodemailer from "nodemailer";
 
-const transporter = nodemailer.createTransport({
-  host: process.env.SMTP_HOST,
-  port: Number(process.env.SMTP_PORT),
-  secure: false, // Keep false for port 2525
-  auth: {
-    user: process.env.SMTP_USER,
-    pass: process.env.SMTP_PASS,
-  },
-});
-
 export const sendEmail = async ({ to, subject, html }) => {
+  const transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port: Number(process.env.SMTP_PORT),
+    secure: true,
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASS,
+    },
+  });
+
   await transporter.verify();
-  // console.log(" SMTP Connected Successfully");
 
   const info = await transporter.sendMail({
     from: `ConvoSphere <${process.env.EMAIL_FROM}>`,
@@ -21,5 +20,7 @@ export const sendEmail = async ({ to, subject, html }) => {
     html,
   });
 
-  // console.log("Email sent:", info.messageId);
+  if (process.env.SMTP_HOST.includes("ethereal")) {
+    console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+  }
 };

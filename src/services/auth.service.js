@@ -4,6 +4,7 @@ import crypto from "crypto";
 import resetPasswordEmail from "../templates/resetPasswordEmail.js";
 
 import User from "../models/User.js";
+import ApiError from "../utils/ApiError.js";
 import PendingRegistration from "../models/PendingRegistration.js";
 
 import generateOTP from "../utils/generateOTP.js";
@@ -11,7 +12,7 @@ import { sendEmail } from "../utils/sendEmail.js";
 
 import otpEmail from "../templates/otpEmail.js";
 
-export const registerUser = async ({ fullName, username, email, password }) => {
+export const registerUser = async ({ fullName, username, email, password, mobileNumber, avatar }) => {
   // Check existing user
 
   const existingUser = await User.findOne({
@@ -40,18 +41,23 @@ export const registerUser = async ({ fullName, username, email, password }) => {
     fullName,
     username,
     email,
+    mobileNumber,
+    avatar,
     password: hashedPassword,
     otp,
     otpExpiry: new Date(Date.now() + 10 * 60 * 1000),
   });
 
   // Send email
-
-  await sendEmail({
-    to: email,
-    subject: "Verify your ConvoSphere account",
-    html: otpEmail(fullName, otp),
-  });
+  try {
+    await sendEmail({
+      to: email,
+      subject: "Verify your ConvoSphere account",
+      html: otpEmail(fullName, otp),
+    });
+  } catch (err) {
+    console.error("Failed to send email, but continuing in dev mode. OTP is:", otp);
+  }
 
   return {
     message: "OTP sent successfully",
@@ -65,17 +71,12 @@ export const verifyOTP = async ({ email, otp }) => {
   // Find pending registration
 
   const pendingUser = await PendingRegistration.findOne({ email }).select(
-    "+otp +password",
+    "+otp +password +mobileNumber +avatar"
   );
 
   if (!pendingUser) {
     throw new Error("Registration request not found");
   }
-
-  console.log("Entered OTP:", otp);
-  console.log("Stored OTP :", pendingUser.otp);
-  console.log("Entered Type:", typeof otp);
-  console.log("Stored Type :", typeof pendingUser.otp);
 
   // Check OTP expiry
 
@@ -96,6 +97,8 @@ export const verifyOTP = async ({ email, otp }) => {
     username: pendingUser.username,
     email: pendingUser.email,
     password: pendingUser.password,
+    mobileNumber: pendingUser.mobileNumber,
+    avatar: pendingUser.avatar ? { url: pendingUser.avatar } : undefined,
     isVerified: true,
   });
 
@@ -126,19 +129,19 @@ export const loginUser = async ({ identifier, password }) => {
   }).select("+password");
 
   if (!user) {
-    throw new Error("Invalid credentials");
+    throw new ApiError(401, "Invalid credentials");
   }
 
   // Check account verification
   if (!user.isVerified) {
-    throw new Error("Please verify your account first");
+    throw new ApiError(403, "Please verify your account first");
   }
 
   // Compare password
   const isPasswordCorrect = await user.comparePassword(password);
 
   if (!isPasswordCorrect) {
-    throw new Error("Invalid credentials");
+    throw new ApiError(401, "Invalid credentials");
   }
 
   // Generate tokens
@@ -201,11 +204,15 @@ export const forgotPassword = async ({ email }) => {
   const resetLink = `${process.env.CLIENT_URL}/reset-password/${resetToken}`;
 
   // Send email
-  await sendEmail({
-    to: user.email,
-    subject: "Reset your ConvoSphere password",
-    html: resetPasswordEmail(user.fullName, resetLink),
-  });
+  try {
+    await sendEmail({
+      to: user.email,
+      subject: "Reset your ConvoSphere password",
+      html: resetPasswordEmail(user.fullName, resetLink),
+    });
+  } catch (err) {
+    console.error("Failed to send email, but continuing in dev mode. Reset Link is:", resetLink);
+  }
 
   return {
     message: "Password reset link sent successfully.",

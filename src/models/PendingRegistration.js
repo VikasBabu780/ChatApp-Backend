@@ -23,6 +23,15 @@ const pendingRegistrationSchema = new mongoose.Schema(
       trim: true,
       unique: true,
     },
+    
+    mobileNumber: {
+      type: String,
+      trim: true,
+    },
+
+    avatar: {
+      type: String,
+    },
 
     password: {
       type: String,

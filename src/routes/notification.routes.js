@@ -26,24 +26,24 @@ router.get(
   getUnreadNotificationCountController
 );
 router.patch(
-  "/read/:notificationId",
-  verifyJWT,
-  markNotificationAsReadController
-);
-router.patch(
   "/read-all",
   verifyJWT,
   markAllNotificationsAsReadController
 );
-router.delete(
-  "/:notificationId",
+router.patch(
+  "/read/:notificationId",
   verifyJWT,
-  deleteNotificationController
+  markNotificationAsReadController
 );
 router.delete(
   "/clear",
   verifyJWT,
   clearNotificationsController
+);
+router.delete(
+  "/:notificationId",
+  verifyJWT,
+  deleteNotificationController
 );
 
 export default router;

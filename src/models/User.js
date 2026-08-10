@@ -132,11 +132,13 @@ const userSchema = new mongoose.Schema(
     accessToken: {
       type: String,
       default: null,
+      select: false,
     },
 
     refreshToken: {
       type: String,
       default: null,
+      select: false,
     },
     friends: [
       {
@@ -187,6 +189,45 @@ const userSchema = new mongoose.Schema(
         default: true,
       },
     },
+    blockedUsers: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+
+    blockedBy: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    ],
+    archivedChats: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Chat",
+      },
+    ],
+    pinnedChats: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Chat",
+      },
+    ],
+    mutedChats: [
+      {
+        chat: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "Chat",
+          required: true,
+        },
+
+        mutedUntil: {
+          type: Date,
+          default: null,
+        },
+      },
+    ],
   },
   {
     timestamps: true,
@@ -242,6 +283,6 @@ userSchema.methods.generateRefreshToken = function () {
   );
 };
 
-const User = mongoose.model("User", userSchema);
+const User = mongoose.models.User || mongoose.model("User", userSchema);
 
 export default User;

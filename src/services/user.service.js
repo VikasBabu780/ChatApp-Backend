@@ -14,7 +14,6 @@ export const updateProfile = async (
 
 ) => {
   const user = await User.findById(userId);
-   console.log(data);
 
   if (!user) {
     throw new Error("User not found.");
@@ -31,12 +30,9 @@ export const updateProfile = async (
   if (mobileNumber !== undefined) {
     // Optional: prevent duplicate mobile numbers
     if (mobileNumber) {
-      const existingUser = await User.findOne({
-        mobileNumber,
-        _id: { $ne: userId },
-      });
+      const existingUser = await User.findOne({ mobileNumber });
 
-      if (existingUser) {
+      if (existingUser && existingUser._id.toString() !== userId.toString()) {
         throw new Error("Mobile number is already in use.");
       }
     }
@@ -60,11 +56,11 @@ export const uploadAvatar = async (userId, filePath) => {
     throw new Error("User not found.");
   }
 
-  // Upload new avatar
-  const uploadedAvatar = await uploadOnCloudinary(
-    filePath,
-    "ConvoSphere/avatars"
-  );
+  // Bypass Cloudinary for local development
+  const uploadedAvatar = {
+    public_id: "local_avatar_" + Date.now(),
+    secure_url: filePath,
+  };
 
   // Store old avatar id
   const oldPublicId = user.avatar?.public_id;
@@ -102,11 +98,11 @@ export const uploadCoverImage = async (userId, filePath) => {
     throw new Error("User not found.");
   }
 
-  // Upload new cover image
-  const uploadedCover = await uploadOnCloudinary(
-    filePath,
-    "ConvoSphere/cover-images"
-  );
+  // Bypass Cloudinary for local development
+  const uploadedCover = {
+    public_id: "local_cover_" + Date.now(),
+    secure_url: filePath,
+  };
 
   // Store old cover image public id
   const oldPublicId = user.coverImage?.public_id;

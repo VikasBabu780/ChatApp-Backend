@@ -8,6 +8,11 @@ export const register = asyncHandler(async (req, res) => {
   // Validate request body
   const validatedData = registerSchema.parse(req.body);
 
+  // If avatar uploaded, use its path. Else generate ui-avatars URL.
+  if (req.file) {
+    validatedData.avatar = req.file.path;
+  }
+
   // Call service
   const result = await registerUser(validatedData);
 
@@ -51,14 +56,14 @@ export const login = asyncHandler(async (req, res) => {
   res.cookie("accessToken", accessToken, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
+    sameSite: "lax",
     maxAge: 15 * 60 * 1000, // 15 min
   });
 
   res.cookie("refreshToken", refreshToken, {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
+    sameSite: "lax",
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
   });
 
@@ -99,7 +104,7 @@ export const logout = asyncHandler(async (req, res) => {
   const cookieOptions = {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
+    sameSite: "lax",
   };
 
   res.clearCookie("accessToken", cookieOptions);

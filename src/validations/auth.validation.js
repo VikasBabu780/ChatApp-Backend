@@ -19,8 +19,17 @@ export const registerSchema = z.object({
     ),
 
   email: z
-    .email("Invalid email address.")
-    .transform((email) => email.toLowerCase().trim()),
+    .string()
+    .trim()
+    .toLowerCase()
+    .email("Invalid email address."),
+
+  mobileNumber: z
+    .string()
+    .trim()
+    .regex(/^[0-9]{10}$/, "Mobile number must be exactly 10 digits.")
+    .optional()
+    .or(z.literal("")),
 
   password: z
     .string()
@@ -35,41 +44,30 @@ export const registerSchema = z.object({
     ),
 });
 
-export const verifyOtpSchema = z.object({
-  email: z
-    .email("Invalid email")
-    .trim()
-    .toLowerCase(),
-
-  otp: z
-    .string()
-    .trim()
-    .length(6, "OTP must be exactly 6 digits"),
-});
-
 export const verifyOTPSchema = z.object({
   email: z
-    .email("Invalid email address")
+    .string()
     .trim()
-    .toLowerCase(),
+    .toLowerCase()
+    .email("Invalid email address."),
 
   otp: z
     .string()
-    .length(6, "OTP must be 6 digits")
-    .regex(/^\d+$/, "OTP must contain only numbers"),
+    .trim()
+    .length(6, "OTP must be exactly 6 digits.")
+    .regex(/^\d+$/, "OTP must contain only numbers."),
 });
 
 export const loginSchema = z.object({
   identifier: z
     .string()
     .trim()
-    .min(3, "Email or username is required"),
+    .min(3, "Email or username is required."),
 
   password: z
     .string()
-    .min(8, "Password must be at least 8 characters"),
+    .min(8, "Password must be at least 8 characters."),
 });
-
 
 export const forgotPasswordSchema = z.object({
   email: z
@@ -83,11 +81,18 @@ export const resetPasswordSchema = z.object({
   password: z
     .string()
     .min(8, "Password must be at least 8 characters.")
-    .regex(/[A-Z]/, "Password must contain at least one uppercase letter.")
-    .regex(/[a-z]/, "Password must contain at least one lowercase letter.")
+    .max(32, "Password cannot exceed 32 characters.")
+    .regex(
+      /[A-Z]/,
+      "Password must contain at least one uppercase letter.",
+    )
+    .regex(
+      /[a-z]/,
+      "Password must contain at least one lowercase letter.",
+    )
     .regex(/[0-9]/, "Password must contain at least one number.")
     .regex(
       /[!@#$%^&*(),.?":{}|<>]/,
-      "Password must contain at least one special character."
+      "Password must contain at least one special character.",
     ),
 });

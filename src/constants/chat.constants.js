@@ -1,0 +1,25 @@
+export const CHAT_TYPES = {
+  PRIVATE: "PRIVATE",
+  GROUP: "GROUP",
+};
+
+export const MESSAGE_TYPES = {
+  TEXT: "TEXT",
+  IMAGE: "IMAGE",
+  VIDEO: "VIDEO",
+  DOCUMENT: "DOCUMENT",
+  AUDIO: "AUDIO",
+  SYSTEM: "SYSTEM",
+};
+
+export const MESSAGE_STATUS = {
+  SENT: "SENT",
+  DELIVERED: "DELIVERED",
+  READ: "READ",
+};
+
+export const PARTICIPANT_ROLES = {
+  MEMBER: "MEMBER",
+  ADMIN: "ADMIN",
+  OWNER: "OWNER",
+};

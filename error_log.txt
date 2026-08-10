@@ -1,0 +1,131 @@
+Error: Invalid credentials
+    at loginUser (file:///C:/Users/babuv/OneDrive/Desktop/ConvoSphere/server/src/services/auth.service.js:145:11)
+    at async file:///C:/Users/babuv/OneDrive/Desktop/ConvoSphere/server/src/controllers/auth.controller.js:51:18
+Error: Invalid credentials
+    at loginUser (file:///C:/Users/babuv/OneDrive/Desktop/ConvoSphere/server/src/services/auth.service.js:145:11)
+    at async file:///C:/Users/babuv/OneDrive/Desktop/ConvoSphere/server/src/controllers/auth.controller.js:51:18
+Error: Invalid credentials
+    at loginUser (file:///C:/Users/babuv/OneDrive/Desktop/ConvoSphere/server/src/services/auth.service.js:145:11)
+    at async file:///C:/Users/babuv/OneDrive/Desktop/ConvoSphere/server/src/controllers/auth.controller.js:51:18
+Error: Chat is already archived.
+    at archiveChat (file:///C:/Users/babuv/OneDrive/Desktop/ConvoSphere/server/src/services/archive.service.js:54:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async archiveChatController (file:///C:/Users/babuv/OneDrive/Desktop/ConvoSphere/server/src/controllers/archive.controller.js:20:20)
+TypeError: Cannot set property query of #<IncomingMessage> which has only a getter
+    at file:///C:/Users/babuv/OneDrive/Desktop/ConvoSphere/server/src/middlewares/validate.middleware.js:28:17
+    at Layer.handleRequest (C:\Users\babuv\OneDrive\Desktop\ConvoSphere\server\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\babuv\OneDrive\Desktop\ConvoSphere\server\node_modules\router\lib\route.js:157:13)
+    at file:///C:/Users/babuv/OneDrive/Desktop/ConvoSphere/server/src/middlewares/auth.middleware.js:31:3
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+Error: You have already reported this user.
+    at reportUser (file:///C:/Users/babuv/OneDrive/Desktop/ConvoSphere/server/src/services/report.service.js:103:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async reportUserController (file:///C:/Users/babuv/OneDrive/Desktop/ConvoSphere/server/src/controllers/report.controller.js:19:20)
+Error: Chat is already archived.
+    at archiveChat (file:///C:/Users/babuv/OneDrive/Desktop/ConvoSphere/server/src/services/archive.service.js:54:11)
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async archiveChatController (file:///C:/Users/babuv/OneDrive/Desktop/ConvoSphere/server/src/controllers/archive.controller.js:20:20)
+TypeError: Cannot set property query of #<IncomingMessage> which has only a getter
+    at file:///C:/Users/babuv/OneDrive/Desktop/ConvoSphere/server/src/middlewares/validate.middleware.js:28:17
+    at Layer.handleRequest (C:\Users\babuv\OneDrive\Desktop\ConvoSphere\server\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\babuv\OneDrive\Desktop\ConvoSphere\server\node_modules\router\lib\route.js:157:13)
+    at file:///C:/Users/babuv/OneDrive/Desktop/ConvoSphere/server/src/middlewares/auth.middleware.js:31:3
+    at process.processTicksAndRejections (node:internal/process/task_queues:105:5)
+ZodError: [
+  {
+    "origin": "string",
+    "code": "invalid_format",
+    "format": "regex",
+    "pattern": "/^[0-9]{10}$/",
+    "path": [
+      "mobileNumber"
+    ],
+    "message": "Mobile number must be exactly 10 digits."
+  }
+]
+    at file:///C:/Users/babuv/OneDrive/Desktop/ConvoSphere/server/src/controllers/auth.controller.js:9:40
+    at file:///C:/Users/babuv/OneDrive/Desktop/ConvoSphere/server/src/utils/asyncHandler.js:2:19
+    at Layer.handleRequest (C:\Users\babuv\OneDrive\Desktop\ConvoSphere\server\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\babuv\OneDrive\Desktop\ConvoSphere\server\node_modules\router\lib\route.js:157:13)
+    at multerMiddleware (C:\Users\babuv\OneDrive\Desktop\ConvoSphere\server\node_modules\multer\lib\make-middleware.js:18:41)
+    at Layer.handleRequest (C:\Users\babuv\OneDrive\Desktop\ConvoSphere\server\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\babuv\OneDrive\Desktop\ConvoSphere\server\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\babuv\OneDrive\Desktop\ConvoSphere\server\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\babuv\OneDrive\Desktop\ConvoSphere\server\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\babuv\OneDrive\Desktop\ConvoSphere\server\node_modules\router\lib\layer.js:152:17)
+ZodError: [
+  {
+    "origin": "string",
+    "code": "invalid_format",
+    "format": "regex",
+    "pattern": "/^[0-9]{10}$/",
+    "path": [
+      "mobileNumber"
+    ],
+    "message": "Mobile number must be exactly 10 digits."
+  }
+]
+    at file:///C:/Users/babuv/OneDrive/Desktop/ConvoSphere/server/src/controllers/auth.controller.js:9:40
+    at file:///C:/Users/babuv/OneDrive/Desktop/ConvoSphere/server/src/utils/asyncHandler.js:2:19
+    at Layer.handleRequest (C:\Users\babuv\OneDrive\Desktop\ConvoSphere\server\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\babuv\OneDrive\Desktop\ConvoSphere\server\node_modules\router\lib\route.js:157:13)
+    at multerMiddleware (C:\Users\babuv\OneDrive\Desktop\ConvoSphere\server\node_modules\multer\lib\make-middleware.js:18:41)
+    at Layer.handleRequest (C:\Users\babuv\OneDrive\Desktop\ConvoSphere\server\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\babuv\OneDrive\Desktop\ConvoSphere\server\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\babuv\OneDrive\Desktop\ConvoSphere\server\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\babuv\OneDrive\Desktop\ConvoSphere\server\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\babuv\OneDrive\Desktop\ConvoSphere\server\node_modules\router\lib\layer.js:152:17)
+ZodError: [
+  {
+    "origin": "string",
+    "code": "invalid_format",
+    "format": "regex",
+    "pattern": "/^[0-9]{10}$/",
+    "path": [
+      "mobileNumber"
+    ],
+    "message": "Mobile number must be exactly 10 digits."
+  }
+]
+    at file:///C:/Users/babuv/OneDrive/Desktop/ConvoSphere/server/src/controllers/auth.controller.js:9:40
+    at file:///C:/Users/babuv/OneDrive/Desktop/ConvoSphere/server/src/utils/asyncHandler.js:2:19
+    at Layer.handleRequest (C:\Users\babuv\OneDrive\Desktop\ConvoSphere\server\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\babuv\OneDrive\Desktop\ConvoSphere\server\node_modules\router\lib\route.js:157:13)
+    at multerMiddleware (C:\Users\babuv\OneDrive\Desktop\ConvoSphere\server\node_modules\multer\lib\make-middleware.js:18:41)
+    at Layer.handleRequest (C:\Users\babuv\OneDrive\Desktop\ConvoSphere\server\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\babuv\OneDrive\Desktop\ConvoSphere\server\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\babuv\OneDrive\Desktop\ConvoSphere\server\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\babuv\OneDrive\Desktop\ConvoSphere\server\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\babuv\OneDrive\Desktop\ConvoSphere\server\node_modules\router\lib\layer.js:152:17)
+ZodError: [
+  {
+    "origin": "string",
+    "code": "invalid_format",
+    "format": "regex",
+    "pattern": "/^[a-z0-9._]+$/",
+    "path": [
+      "username"
+    ],
+    "message": "Username can contain only lowercase letters, numbers, dots and underscores."
+  },
+  {
+    "origin": "string",
+    "code": "invalid_format",
+    "format": "regex",
+    "pattern": "/^[0-9]{10}$/",
+    "path": [
+      "mobileNumber"
+    ],
+    "message": "Mobile number must be exactly 10 digits."
+  }
+]
+    at file:///C:/Users/babuv/OneDrive/Desktop/ConvoSphere/server/src/controllers/auth.controller.js:9:40
+    at file:///C:/Users/babuv/OneDrive/Desktop/ConvoSphere/server/src/utils/asyncHandler.js:2:19
+    at Layer.handleRequest (C:\Users\babuv\OneDrive\Desktop\ConvoSphere\server\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\babuv\OneDrive\Desktop\ConvoSphere\server\node_modules\router\lib\route.js:157:13)
+    at multerMiddleware (C:\Users\babuv\OneDrive\Desktop\ConvoSphere\server\node_modules\multer\lib\make-middleware.js:18:41)
+    at Layer.handleRequest (C:\Users\babuv\OneDrive\Desktop\ConvoSphere\server\node_modules\router\lib\layer.js:152:17)
+    at next (C:\Users\babuv\OneDrive\Desktop\ConvoSphere\server\node_modules\router\lib\route.js:157:13)
+    at Route.dispatch (C:\Users\babuv\OneDrive\Desktop\ConvoSphere\server\node_modules\router\lib\route.js:117:3)
+    at handle (C:\Users\babuv\OneDrive\Desktop\ConvoSphere\server\node_modules\router\index.js:435:11)
+    at Layer.handleRequest (C:\Users\babuv\OneDrive\Desktop\ConvoSphere\server\node_modules\router\lib\layer.js:152:17)

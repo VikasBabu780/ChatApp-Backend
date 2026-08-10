@@ -4,12 +4,13 @@ import { z } from "zod";
 export const updateProfileSchema = z.object({
   fullName: z.string().min(3).max(50).optional(),
 
-  bio: z.string().max(150).optional(),
+  bio: z.string().max(150).optional().or(z.literal("")),
 
   mobileNumber: z
     .string()
     .regex(/^[6-9]\d{9}$/, "Invalid mobile number")
-    .optional(),
+    .optional()
+    .or(z.literal("")),
 });
 
 

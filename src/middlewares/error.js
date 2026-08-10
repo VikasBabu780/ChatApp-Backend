@@ -1,38 +1,33 @@
+
 import { ZodError } from "zod";
-import ApiError from "../utils/ApiError.js";
 
 const errorHandler = (err, req, res, next) => {
+  console.error("\n========== API ERROR ==========");
+  console.error("URL:", req.method, req.originalUrl);
+  console.error("Message:", err.message);
 
-  // Zod Validation Error
   if (err instanceof ZodError) {
+    console.error("ZOD ERRORS:", err.issues);
+
     return res.status(400).json({
       success: false,
-      message: "Validation failed",
-      errors: err.errors,
+      message: "Please correct the following errors.",
+      errors: err.issues.map((issue) => ({
+        field: issue.path.join("."),
+        message: issue.message,
+      })),
     });
   }
 
-  // Custom API Error
-  if (err instanceof ApiError) {
-    return res.status(err.statusCode).json({
-      success: false,
-      message: err.message,
-    });
-  }
+  console.error("FULL ERROR:", err);
 
-  // Mongoose Duplicate Key Error
-  if (err.code === 11000) {
-    return res.status(409).json({
-      success: false,
-      message: "Duplicate value found.",
-    });
-  }
+  const statusCode = err.statusCode || err.status || 500;
 
-  // Default Error
-  return res.status(500).json({
+  return res.status(statusCode).json({
     success: false,
     message: err.message || "Internal Server Error",
   });
 };
 
 export default errorHandler;
+

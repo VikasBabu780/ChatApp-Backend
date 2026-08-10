@@ -7,6 +7,7 @@ import {
   notifyFriendAccepted,
   notifyFriendRejected,
 } from "./notification-helper.service.js";
+import { getIO } from "../sockets/index.js";
 
 export const sendFriendRequest = async (senderId, receiverId) => {
   // Validate receiver ID
@@ -95,6 +96,10 @@ export const sendFriendRequest = async (senderId, receiverId) => {
           existingRequest._id
         );
 
+        getIO().to(`user:${receiverId}`).emit("friend-request:received", {
+          message: "You have a new friend request",
+        });
+
         return {
           message: "Friend request sent successfully.",
           data: existingRequest,
@@ -121,6 +126,10 @@ export const sendFriendRequest = async (senderId, receiverId) => {
     receiver,
     request._id
   );
+
+  getIO().to(`user:${receiverId}`).emit("friend-request:received", {
+    message: "You have a new friend request",
+  });
 
   return {
     message: "Friend request sent successfully.",
@@ -166,6 +175,10 @@ export const cancelFriendRequest = async (
   request.cancelledAt = new Date();
 
   await request.save();
+
+  getIO().to(`user:${request.receiver}`).emit("friend-request:cancelled", {
+    message: "Friend request was cancelled",
+  });
 
   return {
     message: "Friend request cancelled successfully.",
@@ -255,6 +268,10 @@ export const acceptFriendRequest = async (
     request._id
   );
 
+  getIO().to(`user:${request.sender}`).emit("friend-request:accepted", {
+    message: "Friend request was accepted",
+  });
+
   return {
     message: "Friend request accepted successfully.",
     data: request,
@@ -328,6 +345,10 @@ export const rejectFriendRequest = async (
     sender,   // Person receiving notification
     request._id
   );
+
+  getIO().to(`user:${request.sender}`).emit("friend-request:rejected", {
+    message: "Friend request was rejected",
+  });
 
   return {
     message: "Friend request rejected successfully.",
@@ -456,6 +477,21 @@ export const removeFriend = async (
             cancelledAt: new Date(),
         }
     );
+
+    if (request) {
+        const chat = await Chat.findOne({
+            participants: { $all: [userId, friendId] }
+        });
+        if (chat) {
+            await Chat.findByIdAndUpdate(chat._id, {
+                isDeleted: true,
+            });
+        }
+    }
+
+    getIO().to(`user:${friendId}`).emit("friend:removed", {
+        message: "You were removed from friends",
+    });
 
     return {
         message: "Friend removed successfully.",
