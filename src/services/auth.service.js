@@ -56,6 +56,7 @@ export const registerUser = async ({ fullName, username, email, password, mobile
       html: otpEmail(fullName, otp),
     });
   } catch (err) {
+    console.error("SMTP ERROR:", err.message);
     console.error("Failed to send email, but continuing in dev mode. OTP is:", otp);
   }
 
