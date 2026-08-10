@@ -1,3 +1,26 @@
+import express from "express";
+import cookieParser from "cookie-parser";
+import cors from "cors";
+
+import authRoutes from "./routes/auth.routes.js";
+import userRoutes from "./routes/user.routes.js";
+import friendRoutes from "./routes/friend.routes.js";
+import chatRoutes from "./routes/chat.routes.js";
+import messageRoutes from "./routes/message.routes.js";
+import notificationRoutes from "./routes/notification.routes.js";
+import groupRoutes from "./routes/group.routes.js";
+import mediaRoutes from "./routes/media.routes.js";
+import searchRoutes from "./routes/search.routes.js";
+import reactionRoutes from "./routes/reaction.routes.js";
+import forwardRoutes from "./routes/forward.routes.js";
+import pinRoutes from "./routes/pin.routes.js";
+import blockRoutes from "./routes/block.routes.js";
+import archiveRoutes from "./routes/archive.routes.js";
+import muteRoutes from "./routes/mute.routes.js";
+import pinchatRoutes from "./routes/pinchat.routes.js";
+
+import errorHandler from "./middlewares/error.js";
+
 const app = express();
 
 // ================================
