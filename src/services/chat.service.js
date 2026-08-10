@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import Chat from "../models/chat.js";
+import Chat from "../models/Chat.js";
 import User from "../models/User.js";
 import ApiError from "../utils/ApiError.js";
 import { CHAT_TYPES, PARTICIPANT_ROLES } from "../constants/chat.constants.js";
