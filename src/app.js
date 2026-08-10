@@ -1,26 +1,3 @@
-import express from "express";
-import cookieParser from "cookie-parser";
-import cors from "cors";
-
-import authRoutes from "./routes/auth.routes.js";
-import userRoutes from "./routes/user.routes.js";
-import friendRoutes from "./routes/friend.routes.js";
-import chatRoutes from "./routes/chat.routes.js";
-import messageRoutes from "./routes/message.routes.js";
-import notificationRoutes from "./routes/notification.routes.js";
-import groupRoutes from "./routes/group.routes.js";
-import mediaRoutes from "./routes/media.routes.js";
-import searchRoutes from "./routes/search.routes.js";
-import reactionRoutes from "./routes/reaction.routes.js";
-import forwardRoutes from "./routes/forward.routes.js";
-import pinRoutes from "./routes/pin.routes.js";
-import blockRoutes from "./routes/block.routes.js";
-import archiveRoutes from "./routes/archive.routes.js";
-import muteRoutes from "./routes/mute.routes.js";
-import pinchatRoutes from "./routes/pinchat.routes.js";
-
-import errorHandler from "./middlewares/error.js";
-
 const app = express();
 
 // ================================
@@ -36,11 +13,24 @@ app.use("/public", express.static("public"));
 // CORS
 // ================================
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://chat-app-frontend-ochre-sigma.vercel.app",
+];
+
 app.use(
   cors({
-    origin: process.env.CLIENT_URL,
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error(`CORS blocked for origin: ${origin}`));
+      }
+    },
     credentials: true,
-  }),
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
 );
 
 // ================================
