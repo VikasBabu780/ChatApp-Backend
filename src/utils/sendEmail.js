@@ -1,26 +1,43 @@
-import nodemailer from "nodemailer";
-
 export const sendEmail = async ({ to, subject, html }) => {
-  const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: Number(process.env.SMTP_PORT),
-    secure: Number(process.env.SMTP_PORT) === 465,
-    auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
-    },
-  });
+  try {
+    const response = await fetch("https://api.brevo.com/v3/smtp/email", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        "api-key": process.env.BREVO_API_KEY,
+      },
+      body: JSON.stringify({
+        sender: {
+          name: "ConvoSphere",
+          email: process.env.BREVO_SENDER_EMAIL,
+        },
+        to: [
+          {
+            email: to,
+          },
+        ],
+        subject,
+        htmlContent: html,
+      }),
+    });
 
-  await transporter.verify();
+    const data = await response.json();
 
-  const info = await transporter.sendMail({
-    from: `ConvoSphere <${process.env.EMAIL_FROM}>`,
-    to,
-    subject,
-    html,
-  });
+    if (!response.ok) {
+      console.error("❌ BREVO API ERROR:");
+      console.error("Status:", response.status);
+      console.error("Response:", data);
 
-  if (process.env.SMTP_HOST.includes("ethereal")) {
-    console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info));
+      return false;
+    }
+
+    console.log("✅ OTP email sent successfully");
+    console.log("Brevo Message ID:", data.messageId);
+
+    return true;
+  } catch (error) {
+    console.error("❌ BREVO CONNECTION ERROR:", error.message);
+    return false;
   }
 };

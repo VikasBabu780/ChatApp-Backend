@@ -48,16 +48,15 @@ export const registerUser = async ({ fullName, username, email, password, mobile
     otpExpiry: new Date(Date.now() + 10 * 60 * 1000),
   });
 
-  // Send email
   try {
     await sendEmail({
       to: email,
       subject: "Verify your ConvoSphere account",
       html: otpEmail(fullName, otp),
     });
-  } catch (err) {
-    console.error("SMTP ERROR:", err.message);
-    console.error("Failed to send email, but continuing in dev mode. OTP is:", otp);
+  } catch (error) {
+    console.error("SMTP ERROR:", error.message || error);
+    throw new ApiError(500, "Failed to send OTP email. Please check your connection or try again later.");
   }
 
   return {
