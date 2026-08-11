@@ -3,6 +3,7 @@ import Chat from "../models/Chat.js";
 import User from "../models/User.js";
 import ApiError from "../utils/ApiError.js";
 import { CHAT_TYPES, PARTICIPANT_ROLES } from "../constants/chat.constants.js";
+import Message from "../models/Message.js";
 
 
 export const createOrGetPrivateChat = async (
@@ -162,9 +163,24 @@ export const getMyChats = async (
       updatedAt: -1,
     });
 
+  const chatsWithUnreadCount = await Promise.all(
+    chats.map(async (chat) => {
+      const unreadCount = await Message.countDocuments({
+        chat: chat._id,
+        sender: { $ne: currentUserId },
+        "readBy.user": { $ne: currentUserId },
+      });
+
+      return {
+        ...chat.toObject(),
+        unreadCount,
+      };
+    })
+  );
+
   return {
     message: "Chats fetched successfully.",
-    data: chats,
+    data: chatsWithUnreadCount,
   };
 };
 

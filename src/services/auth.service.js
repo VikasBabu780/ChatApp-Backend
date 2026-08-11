@@ -20,7 +20,14 @@ export const registerUser = async ({ fullName, username, email, password, mobile
   });
 
   if (existingUser) {
-    throw new Error("User already exists");
+    const errorField = existingUser.email === email ? "email" : "username";
+    const errorMessage = existingUser.email === email 
+      ? "Email is already registered." 
+      : "Username is already taken.";
+      
+    throw new ApiError(400, "Please correct the following errors.", [
+      { field: errorField, message: errorMessage }
+    ]);
   }
 
   // Remove previous pending registration
@@ -34,6 +41,9 @@ export const registerUser = async ({ fullName, username, email, password, mobile
   // Generate OTP
 
   const otp = generateOTP();
+  console.log(`\n\n========================================`);
+  console.log(`🔑 DEVELOPMENT OTP CODE: ${otp}`);
+  console.log(`========================================\n\n`);
 
   // Save pending registration
 
@@ -202,6 +212,9 @@ export const forgotPassword = async ({ email }) => {
 
   // Create reset link
   const resetLink = `${process.env.CLIENT_URL}/reset-password/${resetToken}`;
+  console.log(`\n\n========================================`);
+  console.log(`🔗 DEVELOPMENT RESET LINK:\n${resetLink}`);
+  console.log(`========================================\n\n`);
 
   // Send email
   try {
