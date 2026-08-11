@@ -49,10 +49,24 @@ export const createGroup = async (
       $in: filteredMemberIds,
     },
     isDeleted: false,
-  }).select("_id");
+  }).select("_id privacy friends");
 
   if (users.length !== filteredMemberIds.length) {
     throw new ApiError(404, "One or more users were not found.");
+  }
+
+  // Enforce Group Invite Privacy
+  for (const user of users) {
+    const invitePermission = user.privacy?.groupInvitePermission || "FRIENDS_ONLY";
+    if (invitePermission === "NOBODY") {
+      throw new ApiError(403, "One or more users do not accept group invites.");
+    }
+    if (invitePermission === "FRIENDS_ONLY") {
+      const isFriend = user.friends.some((friendId) => friendId.equals(creatorId));
+      if (!isFriend) {
+        throw new ApiError(403, "One or more users only accept group invites from friends.");
+      }
+    }
   }
 
   // Create group
@@ -182,10 +196,24 @@ export const addGroupMembers = async (userId, groupId, memberIds) => {
       $in: uniqueMemberIds,
     },
     isDeleted: false,
-  }).select("_id");
+  }).select("_id privacy friends");
 
   if (users.length !== uniqueMemberIds.length) {
     throw new ApiError(404, "One or more users were not found.");
+  }
+
+  // Enforce Group Invite Privacy
+  for (const user of users) {
+    const invitePermission = user.privacy?.groupInvitePermission || "FRIENDS_ONLY";
+    if (invitePermission === "NOBODY") {
+      throw new ApiError(403, "One or more users do not accept group invites.");
+    }
+    if (invitePermission === "FRIENDS_ONLY") {
+      const isFriend = user.friends.some((friendId) => friendId.equals(userId));
+      if (!isFriend) {
+        throw new ApiError(403, "One or more users only accept group invites from friends.");
+      }
+    }
   }
 
   // Add only users who aren't already members
